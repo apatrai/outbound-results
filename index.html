@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Outbound email — results to date</title>
+<style>
+  :root{
+    --bg:#F6F7F8; --surface:#FFFFFF; --surface-2:#F0F2F4;
+    --ink:#171C21; --ink-2:#3D4750; --muted:#5C6771; --rule:#DDE2E6;
+    --accent:#1D5875; --accent-soft:#E4EDF2;
+    --good:#1B6E51; --good-bg:#E3F0EA;
+    --warn:#8A5F12; --warn-bg:#F5EDDC;
+    --bad:#8A4A46;  --bad-bg:#F3E4E3;
+    --serif:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0E1216; --surface:#151B21; --surface-2:#1B232A;
+      --ink:#E7EBEF; --ink-2:#BFC8D0; --muted:#8E9AA4; --rule:#242E36;
+      --accent:#79B4CE; --accent-soft:#17303D;
+      --good:#5CC49B; --good-bg:#12291F;
+      --warn:#DCA946; --warn-bg:#2B2312;
+      --bad:#DE908A;  --bad-bg:#2C1917;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1216; --surface:#151B21; --surface-2:#1B232A;
+    --ink:#E7EBEF; --ink-2:#BFC8D0; --muted:#8E9AA4; --rule:#242E36;
+    --accent:#79B4CE; --accent-soft:#17303D;
+    --good:#5CC49B; --good-bg:#12291F;
+    --warn:#DCA946; --warn-bg:#2B2312;
+    --bad:#DE908A;  --bad-bg:#2C1917;
+  }
+  :root[data-theme="light"]{
+    --bg:#F6F7F8; --surface:#FFFFFF; --surface-2:#F0F2F4;
+    --ink:#171C21; --ink-2:#3D4750; --muted:#5C6771; --rule:#DDE2E6;
+    --accent:#1D5875; --accent-soft:#E4EDF2;
+    --good:#1B6E51; --good-bg:#E3F0EA;
+    --warn:#8A5F12; --warn-bg:#F5EDDC;
+    --bad:#8A4A46;  --bad-bg:#F3E4E3;
+  }
+
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1060px;margin:0 auto;padding:56px 24px 96px;
+        display:flex;flex-direction:column;gap:48px;}
+  .prose{max-width:68ch;}
+
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+           text-transform:uppercase;color:var(--muted);}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4.4vw,42px);
+     line-height:1.14;letter-spacing:-.015em;text-wrap:balance;margin:10px 0 0;}
+  h2{font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.25;
+     letter-spacing:-.01em;text-wrap:balance;margin:0;}
+  h3{font-size:14px;font-weight:650;letter-spacing:.02em;margin:0;color:var(--ink-2);}
+  p{margin:0;}
+  .sub{color:var(--muted);font-size:15px;margin-top:14px;}
+  header{border-bottom:1px solid var(--rule);padding-bottom:32px;}
+
+  section{display:flex;flex-direction:column;gap:18px;}
+  .sec-head{display:flex;flex-direction:column;gap:6px;
+            border-left:2px solid var(--accent);padding-left:14px;}
+  .sec-note{color:var(--muted);font-size:14px;max-width:68ch;}
+
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;
+        background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden;}
+  .kpi{background:var(--surface);padding:16px 18px;display:flex;flex-direction:column;gap:5px;}
+  .kpi .n{font-family:var(--mono);font-variant-numeric:tabular-nums;
+          font-size:25px;line-height:1;letter-spacing:-.02em;}
+  .kpi .l{font-size:12px;color:var(--muted);letter-spacing:.02em;}
+  .kpi.lead .n{color:var(--accent);}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:8px;background:var(--surface);
+          border:1px solid var(--rule);border-radius:3px;padding:20px;}
+  .frow{display:grid;grid-template-columns:150px 1fr 132px;align-items:center;gap:14px;}
+  .frow .fl{font-size:13px;color:var(--ink-2);}
+  .ftrack{height:14px;background:var(--surface-2);border-radius:0 4px 4px 0;overflow:hidden;}
+  .fbar{height:100%;background:var(--accent);border-radius:0 4px 4px 0;}
+  .frow .fv{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;
+            color:var(--muted);text-align:right;}
+  .frow .fv b{color:var(--ink);font-weight:600;}
+
+  /* tables */
+  .tw{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px;}
+  caption{text-align:left;padding:14px 16px 0;font-size:13px;color:var(--muted);}
+  th{text-align:left;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+     color:var(--muted);font-weight:600;padding:14px 16px 9px;border-bottom:1px solid var(--rule);
+     white-space:nowrap;}
+  td{padding:11px 16px;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;}
+  td.d{font-family:var(--mono);font-size:13px;color:var(--ink-2);white-space:nowrap;}
+  td .co{font-weight:600;}
+  td .dom{display:block;color:var(--muted);font-size:12.5px;font-family:var(--mono);}
+  .camp{color:var(--muted);font-size:13px;white-space:nowrap;}
+
+  .chip{display:inline-block;font-size:11px;font-weight:650;letter-spacing:.04em;
+        padding:2.5px 8px;border-radius:2px;white-space:nowrap;}
+  .chip.good{color:var(--good);background:var(--good-bg);}
+  .chip.warn{color:var(--warn);background:var(--warn-bg);}
+  .chip.bad{color:var(--bad);background:var(--bad-bg);}
+
+  .method{background:var(--surface);border:1px solid var(--rule);border-left:2px solid var(--accent);
+          border-radius:3px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;}
+  .method p{font-size:14.5px;color:var(--ink-2);max-width:74ch;}
+  .method .rule{font-family:var(--serif);font-size:17px;color:var(--ink);}
+  ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;
+     font-size:14.5px;color:var(--ink-2);max-width:72ch;}
+  footer{border-top:1px solid var(--rule);padding-top:22px;color:var(--muted);font-size:13px;
+         display:flex;flex-direction:column;gap:7px;}
+  @media (max-width:620px){
+    .frow{grid-template-columns:112px 1fr;}
+    .frow .fv{grid-column:2;text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">TimelinesAI · outbound email · Alin Agency</div>
+  <h1>Cold email results, 18 June – 23 July 2026</h1>
+  <p class="sub">43 SmartLead campaigns. Every company below is counted only if our first cold email
+  reached its domain <em>before</em> anyone from that company signed up — see the method note.
+  LinkedIn is a separate in-house motion and is not counted here.</p>
+</header>
+
+<section>
+  <div class="kpis">
+    <div class="kpi"><span class="n">163,409</span><span class="l">emails sent</span></div>
+    <div class="kpi"><span class="n">1,126</span><span class="l">replies · 0.69%</span></div>
+    <div class="kpi"><span class="n">2,000</span><span class="l">bounces · 1.22%</span></div>
+    <div class="kpi lead"><span class="n">15</span><span class="l">companies signed up</span></div>
+    <div class="kpi lead"><span class="n">1</span><span class="l">paying customer</span></div>
+    <div class="kpi lead"><span class="n">$200</span><span class="l">MRR</span></div>
+  </div>
+
+  <div class="funnel">
+    <div class="frow"><span class="fl">Emails sent</span>
+      <div class="ftrack"><div class="fbar" style="width:100%"></div></div>
+      <span class="fv"><b>163,409</b></span></div>
+    <div class="frow"><span class="fl">Replies</span>
+      <div class="ftrack"><div class="fbar" style="width:14%"></div></div>
+      <span class="fv"><b>1,126</b> · 0.69% of sent</span></div>
+    <div class="frow"><span class="fl">Signed up</span>
+      <div class="ftrack"><div class="fbar" style="width:4.2%"></div></div>
+      <span class="fv"><b>15</b> · 1.3% of replies</span></div>
+    <div class="frow"><span class="fl">Paying</span>
+      <div class="ftrack"><div class="fbar" style="width:1.6%"></div></div>
+      <span class="fv"><b>1</b> · 6.7% of signups</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Paying</h2>
+    <p class="sec-note">Active Stripe subscription as of 23 July.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th>Company</th><th>Campaign</th><th>First email</th><th>Signed up</th>
+        <th>First payment</th><th class="num">Seats</th><th class="num">MRR</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="co">Savoir Privé Properties</span><span class="dom">savoirproperties.com · UAE</span></td>
+          <td class="camp">C1 Gulf RE Owner (EN)</td>
+          <td class="d">21 Jun</td><td class="d">24 Jun</td><td class="d">6 Jul</td>
+          <td class="num">8</td><td class="num">$200</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sec-note">Savoir booked a demo, did not show, and bought on their own eight days later —
+  8 seats at $25/month. The strongest argument so far for leading with the trial rather than the call.</p>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Signed up, not paying yet</h2>
+    <p class="sec-note">On trial. Ordered by signup date.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th>Company</th><th>Campaign</th><th>First email</th><th>Signed up</th><th>Gap</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="co">RE/MAX Argentina</span><span class="dom">remax.com.ar</span></td>
+            <td class="camp">C4 LatAm (ES)</td><td class="d">18 Jun</td><td class="d">19 Jun</td><td class="d">1 d</td></tr>
+        <tr><td><span class="co">Yamalova &amp; Plewka FZCO</span><span class="dom">lylawyers.com</span></td>
+            <td class="camp">C1 Gulf RE Owner (EN)</td><td class="d">21 Jun</td><td class="d">22 Jun</td><td class="d">1 d</td></tr>
+        <tr><td><span class="co">EAD Skill</span><span class="dom">eadskill.com.br</span></td>
+            <td class="camp">C3 Brazil (PT)</td><td class="d">19 Jun</td><td class="d">23 Jun</td><td class="d">4 d</td></tr>
+        <tr><td><span class="co">Cobranza Total Abogados</span><span class="dom">totalabogados.cl</span></td>
+            <td class="camp">C4 LatAm (ES)</td><td class="d">19 Jun</td><td class="d">23 Jun</td><td class="d">4 d</td></tr>
+        <tr><td><span class="co">Knock it · RE/MAX Portugal</span><span class="dom">remax.pt</span></td>
+            <td class="camp">R1 Portugal PT Owner</td><td class="d">6 Jul</td><td class="d">8 Jul</td><td class="d">2 d</td></tr>
+        <tr><td><span class="co">TechConnectors · Soporte Experto</span><span class="dom">soportexperto.com</span></td>
+            <td class="camp">R1 LatAm ES Owner</td><td class="d">7 Jul</td><td class="d">13 Jul</td><td class="d">6 d</td></tr>
+        <tr><td><span class="co">Gnomen</span><span class="dom">gnomen.co.uk</span></td>
+            <td class="camp">C2 UK-IE RE Owner (EN)</td><td class="d">22 Jun</td><td class="d">15 Jul</td><td class="d">23 d</td></tr>
+        <tr><td><span class="co">Inbestgo</span><span class="dom">inbestgo.com</span></td>
+            <td class="camp">CRM LatAm ES Owner</td><td class="d">15 Jul</td><td class="d">15 Jul</td><td class="d">same day</td></tr>
+        <tr><td><span class="co">Aerodynamics Málaga</span><span class="dom">aerodynamics.es</span></td>
+            <td class="camp">R1 Spain ES Owner</td><td class="d">6 Jul</td><td class="d">16 Jul</td><td class="d">10 d</td></tr>
+        <tr><td><span class="co">Bento Azevedo</span><span class="dom">bentoazevedo.com.br</span></td>
+            <td class="camp">CRM Brazil PT Owner</td><td class="d">16 Jul</td><td class="d">17 Jul</td><td class="d">1 d</td></tr>
+        <tr><td><span class="co">Parrot</span><span class="dom">parrotsoftware.io</span></td>
+            <td class="camp">C4 LatAm (ES)</td><td class="d">23 Jun</td><td class="d">17 Jul</td><td class="d">24 d</td></tr>
+        <tr><td><span class="co">Tractian</span><span class="dom">tractian.com</span></td>
+            <td class="camp">R3 Mexico ES Owner</td><td class="d">20 Jul</td><td class="d">20 Jul</td><td class="d">same day</td></tr>
+        <tr><td><span class="co">Eave</span><span class="dom">eave.es</span></td>
+            <td class="camp">CRM Spain ES Owner</td><td class="d">14 Jul</td><td class="d">21 Jul</td><td class="d">7 d</td></tr>
+        <tr><td><span class="co">Foundry</span><span class="dom">foundryuk.com</span></td>
+            <td class="camp">C2 UK-IE RE Owner (EN)</td><td class="d">22 Jun</td><td class="d">22 Jul</td><td class="d">30 d</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sec-note">Eleven of these fourteen never replied to the campaign — they got the email and
+  signed up on their own. That is the pattern worth designing around.</p>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Demos</h2>
+    <p class="sec-note">Calls held with Cyril that trace back to a campaign reply.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Company</th><th>Campaign</th><th>Replied</th><th>Demo</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td><span class="co">Elytron Cybersecurity</span><span class="dom">elytronsecurity.com · Brazil</span></td>
+            <td class="camp">C3 Brazil (PT)</td><td class="d">19 Jun</td><td class="d">15 Jul</td>
+            <td>Held,
+              <span class="chip warn">no trial yet</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sec-note">Cyril held 33 calls in this window. Only Elytron can be traced to a campaign reply
+  with certainty — the rest are booked under first names only, which is not enough to attribute. If demo
+  attribution matters for planning, the fix is on our side: put the campaign name on the booking link.</p>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Campaigns</h2>
+    <p class="sec-note">Sorted by volume. Reply rate is replies ÷ emails sent.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Campaign</th><th>Launched</th><th class="num">Sent</th><th class="num">Replies</th><th class="num">Reply rate</th></tr></thead>
+      <tbody>
+        <tr><td>C2 UK-IE RE Owner (EN)</td><td class="d">16 Jun</td><td class="num">27,390</td><td class="num">297</td><td class="num">1.08%</td></tr>
+        <tr><td>C3 Brazil (PT)</td><td class="d">16 Jun</td><td class="num">20,089</td><td class="num">84</td><td class="num">0.42%</td></tr>
+        <tr><td>C4 LatAm (ES)</td><td class="d">16 Jun</td><td class="num">18,743</td><td class="num">85</td><td class="num">0.45%</td></tr>
+        <tr><td>CRM Spain ES Owner</td><td class="d">13 Jul</td><td class="num">14,453</td><td class="num">118</td><td class="num">0.82%</td></tr>
+        <tr><td>CRM Brazil PT Owner</td><td class="d">14 Jul</td><td class="num">13,175</td><td class="num">72</td><td class="num">0.55%</td></tr>
+        <tr><td>R1 Spain ES Owner</td><td class="d">2 Jul</td><td class="num">8,164</td><td class="num">54</td><td class="num">0.66%</td></tr>
+        <tr><td>R1 Turkey TR Owner</td><td class="d">2 Jul</td><td class="num">4,965</td><td class="num">26</td><td class="num">0.52%</td></tr>
+        <tr><td>C2 UK-IE RE Operator (EN)</td><td class="d">16 Jun</td><td class="num">4,834</td><td class="num">81</td><td class="num">1.68%</td></tr>
+        <tr><td>R2 Gulf EN Owner</td><td class="d">2 Jul</td><td class="num">4,707</td><td class="num">20</td><td class="num">0.42%</td></tr>
+        <tr><td>CRM LatAm ES Owner</td><td class="d">14 Jul</td><td class="num">4,212</td><td class="num">20</td><td class="num">0.47%</td></tr>
+        <tr><td>C1 Gulf RE Owner (EN)</td><td class="d">16 Jun</td><td class="num">4,098</td><td class="num">7</td><td class="num">0.17%</td></tr>
+        <tr><td>R4 Turkey TR Owner</td><td class="d">17 Jul</td><td class="num">3,828</td><td class="num">11</td><td class="num">0.29%</td></tr>
+        <tr><td>R1 Spain ES Operator</td><td class="d">2 Jul</td><td class="num">2,707</td><td class="num">32</td><td class="num">1.18%</td></tr>
+        <tr><td>R1 Portugal PT Operator</td><td class="d">2 Jul</td><td class="num">817</td><td class="num">18</td><td class="num">2.20%</td></tr>
+        <tr><td>W1 Widget Spain-LatAm ES</td><td class="d">21 Jul</td><td class="num">920</td><td class="num">17</td><td class="num">1.85%</td></tr>
+        <tr><td colspan="5" style="color:var(--muted);font-size:13px;">28 further campaigns, 21,307 sent, 164 replies combined.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sec-note">The two highest reply rates in the account are the smallest lists —
+  Portugal Operator (2.20%) and the Spain/LatAm widget list (1.85%). Both are worth more volume
+  before anything else gets scaled.</p>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>Companies that matched a lead list but are not counted</h2>
+    <p class="sec-note">Kept visible on purpose: each of these looks like a win under domain matching alone.</p>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Company</th><th>Reason</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td><span class="co">One Eden</span><span class="dom">oneeden.es</span></td>
+            <td>Signed up 28 May; our first email reached them 3 July.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">Influencity</span><span class="dom">influencity.com</span></td>
+            <td>Signed up 11 June; first email 3 July.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">ImpulsoGov</span><span class="dom">impulsogov.org</span></td>
+            <td>Signed up 18 June 21:16 UTC; first email went out the next day. Paying $25/mo, but not from this channel.</td>
+            <td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">Trainingym</span><span class="dom">trainingym.com</span></td>
+            <td>Signed up 30 June; first email 6 July.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">Uqbar</span><span class="dom">uqbar.com.br</span></td>
+            <td>Signed up 14 July; first email 16 July.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">4U Yachting</span><span class="dom">4uyachting.com</span></td>
+            <td>Signed up 21 July; first email 23 July.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">RICSA</span><span class="dom">ricsa.com.ar</span></td>
+            <td>Signed up 16 June; first email 18 June.</td><td><span class="chip bad">signed up first</span></td></tr>
+        <tr><td><span class="co">Cenestur</span><span class="dom">cenestur.edu.ec</span></td>
+            <td>On a list, but no email has been sent to them yet.</td><td><span class="chip warn">not emailed</span></td></tr>
+        <tr><td><span class="co">TaxCo Brasil</span><span class="dom">taxcobrasil.com</span></td>
+            <td>Account open since 29 May, before the campaigns started.</td><td><span class="chip bad">existing account</span></td></tr>
+        <tr><td><span class="co">SAME México</span><span class="dom">same.com.mx</span></td>
+            <td>Customer since 9 May 2026.</td><td><span class="chip bad">existing customer</span></td></tr>
+        <tr><td><span class="co">Kristal Clinic</span><span class="dom">kristalclinic.com</span></td>
+            <td>Customer since July 2025.</td><td><span class="chip bad">existing customer</span></td></tr>
+        <tr><td><span class="co">ELE Interior</span><span class="dom">eleinterior.com</span></td>
+            <td>Customer since March 2025.</td><td><span class="chip bad">existing customer</span></td></tr>
+        <tr><td><span class="co">Delend</span><span class="dom">delend.finance</span></td>
+            <td>Customer since November 2025.</td><td><span class="chip bad">existing customer</span></td></tr>
+        <tr><td><span class="co">Ssilva Gestión</span><span class="dom">ssilva.cl</span></td>
+            <td>Customer since March 2025.</td><td><span class="chip bad">existing customer</span></td></tr>
+        <tr><td><span class="co">Bally's · BearFootSoul</span><span class="dom">bearfootsoul.com</span></td>
+            <td>LinkedIn campaign run in-house, not in any email list.</td><td><span class="chip warn">other channel</span></td></tr>
+        <tr><td><span class="co">Alan Howard</span><span class="dom">alanhoward.co.uk</span></td>
+            <td>LinkedIn, in-house.</td><td><span class="chip warn">other channel</span></td></tr>
+        <tr><td><span class="co">Cotown Sharing Life</span><span class="dom">cotown.com</span></td>
+            <td>LinkedIn, in-house.</td><td><span class="chip warn">other channel</span></td></tr>
+        <tr><td><span class="co">Spare Crib Global</span><span class="dom">sparecrib.com</span></td>
+            <td>LinkedIn, in-house.</td><td><span class="chip warn">other channel</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>How these numbers are produced</h2></div>
+  <div class="method">
+    <p class="rule">A company counts only if the first cold email to its domain was sent before
+    anyone from that company created a TimelinesAI workspace.</p>
+    <p>Domain matching alone is not enough — it credits the campaign for companies that had already
+    found us, and for companies that have been customers for a year. Both were happening. Every row
+    above is checked against the actual send timestamp from the SmartLead message history, not the
+    date a lead was uploaded to a list.</p>
+    <ul>
+      <li><strong>Sends, replies, bounces, send timestamps</strong> — SmartLead API, all 43 campaigns
+      created since 10 June, read per campaign.</li>
+      <li><strong>Signups, seats, subscriptions, payments</strong> — TimelinesAI production database;
+      MRR is the active Stripe subscription (seats × seat price), annual plans divided by twelve.</li>
+      <li><strong>Demos</strong> — call recordings, matched to a campaign reply by the attendee.</li>
+      <li><strong>Not counted here:</strong> LinkedIn outreach, which is a separate in-house motion,
+      and any company whose signup predates its first email.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div>Period covered: 18 June – 23 July 2026 · figures as of 23 July 2026.</div>
+  <div>Internal document. Confidential — please don't forward.</div>
+</footer>
+
+</div>
+
+</body>
+</html>
